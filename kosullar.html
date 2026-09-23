@@ -4,6 +4,13 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Kullanım Koşulları — Çetele</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Instrument+Sans:wght@400;500;600&display=swap&subset=latin,latin-ext"
+      rel="stylesheet"
+    />
+    <link rel="icon" href="img/mark.webp" />
     <style>
       :root {
         --bg: #fdfcfb;
@@ -37,10 +44,46 @@
       hr { border: 0; border-top: 1px solid var(--rule); margin: 3rem 0 1.5rem; }
       footer { color: var(--muted); font-size: .875rem; }
       .lead { color: var(--muted); }
+      /* Same two faces as the landing page, so the three pages read as one site. */
+      body {
+        font-family: 'Instrument Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      }
+      h1,
+      h2 {
+        font-family: 'Comfortaa', ui-rounded, system-ui, sans-serif;
+        font-weight: 700;
+      }
+      .home {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        margin-bottom: 2.5rem;
+        font-family: 'Comfortaa', ui-rounded, system-ui, sans-serif;
+        font-weight: 700;
+        font-size: 19px;
+        letter-spacing: -0.02em;
+        text-decoration: none;
+        color: inherit;
+      }
+      .home img {
+        width: 28px;
+        height: 28px;
+        border-radius: 8px;
+      }
+      .home span {
+        color: var(--muted);
+        font-family: 'Instrument Sans', sans-serif;
+        font-weight: 500;
+        font-size: 14px;
+      }
     </style>
   </head>
   <body>
     <main>
+      <a class="home" href="index.html">
+        <img src="img/mark.webp" alt="" />
+        Çetele <span>· ana sayfa</span>
+      </a>
       <h1>Kullanım Koşulları</h1>
       <p class="updated">Çetele · Son güncelleme: 23 Eylül 2026</p>
 
@@ -109,10 +152,26 @@
         tüketici mevzuatından doğan haklarını ortadan kaldırmaz.
       </p>
 
-      <h2>8. Ücretlendirme</h2>
+      <h2>8. Ücretlendirme ve Çetele Pro</h2>
       <p>
-        Uygulama şu anda ücretsizdir ve reklam içermez. İleride ücretli bir plan sunulursa, mevcut
-        kullanıcılar önceden bilgilendirilir ve ücretli özellikler açıkça belirtilir.
+        Kayıt tutmak — alış, üretim, satış, fire ve sayım girmek — ücretsizdir ve öyle kalır.
+        Uygulama reklam içermez.
+      </p>
+      <p>
+        Uyarı kartları, bildirimler ve sipariş önerileri gibi analiz özellikleri
+        <strong>Çetele Pro</strong> kapsamındadır. Her işletme ilk 40 kaydı boyunca bu özellikleri
+        ücretsiz kullanır; sonrasında Pro aboneliği gerekir. Pro'su sona eren kullanıcı, girdiği
+        tüm kayıtları görmeye ve yeni kayıt girmeye devam eder; hiçbir veri ödeme şartına
+        bağlanmaz.
+      </p>
+      <p>
+        Çetele Pro, Apple App Store üzerinden <strong>otomatik yenilenen abonelik</strong> olarak
+        sunulur (aylık veya yıllık). Fiyat satın alma anında App Store'da gösterilir. Ücretsiz
+        deneme sunulduğunda, deneme süresi bitince ücret otomatik olarak Apple hesabından
+        alınır. Abonelik, mevcut dönemin bitiminden en az 24 saat önce iptal edilmezse aynı
+        koşullarla yenilenir. İptal ve yönetim iOS Ayarlar → Apple Hesabı → Abonelikler
+        üzerinden yapılır; iptal, mevcut dönemin sonunda geçerli olur ve kalan süre için iade
+        yapılmaz. Ödeme, iade ve faturalama Apple tarafından yürütülür.
       </p>
 
       <h2>9. Koşullarda değişiklik</h2>

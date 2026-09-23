@@ -3,55 +3,978 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Çetele</title>
+    <title>Çetele — Esnaf için maliyet ve stok takibi</title>
+    <meta
+      name="description"
+      content="Aldım, ürettim, sattım. Gerisini Çetele tutar. Küçük üretim yapan esnaf için maliyet, stok, fire ve üretim verimi takibi."
+    />
+    <meta name="theme-color" content="#FDFCFB" />
+    <meta property="og:title" content="Çetele — Esnaf için maliyet ve stok takibi" />
+    <meta
+      property="og:description"
+      content="Aldım, ürettim, sattım. Gerisini Çetele tutar."
+    />
+    <meta property="og:type" content="website" />
+    <link rel="icon" href="img/mark.webp" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@500;700&family=Instrument+Sans:wght@400;500;600&display=swap&subset=latin,latin-ext"
+      rel="stylesheet"
+    />
     <style>
+      /* ---------------------------------------------------------------
+         Çetele — landing.
+         The app's own palette: warm-white paper, near-black ink, one ochre
+         that only ever means "look here". Display face is Comfortaa, the
+         same one the app's screen titles use, so the page and the product
+         speak with one voice.
+         --------------------------------------------------------------- */
       :root {
-        --bg: #fdfcfb;
-        --text: #1a1a1a;
-        --muted: #5f5f5f;
-        --rule: #e6e2dd;
+        --paper: #fdfcfb;
+        --card: #ffffff;
+        --ink: #050505;
+        --ink-2: #6b6b73;
+        --ink-3: #74747c;
+        /* Large display text only: 3.3:1, above the 3:1 floor. */
+        --ink-dim: #8a8a93;
+        --rule: #ecedef;
+        --soft: #f4f5f6;
+        --ochre: #b25e00;
+        --ochre-soft: #fff2e0;
+        --loss: #c8102e;
+        --gain: #0b7a3b;
+        --gain-soft: #e3f5ea;
+
+        --display: 'Comfortaa', ui-rounded, system-ui, sans-serif;
+        --body: 'Instrument Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+        --gut: clamp(20px, 5vw, 48px);
+        --max: 1120px;
       }
-      @media (prefers-color-scheme: dark) {
-        :root {
-          --bg: #171615;
-          --text: #f2efec;
-          --muted: #a8a29c;
-          --rule: #322f2c;
-        }
+
+      * {
+        box-sizing: border-box;
       }
-      * { box-sizing: border-box; }
+      html {
+        scroll-behavior: smooth;
+        -webkit-text-size-adjust: 100%;
+      }
       body {
         margin: 0;
-        min-height: 100vh;
+        background: var(--paper);
+        color: var(--ink);
+        font-family: var(--body);
+        font-size: 17px;
+        line-height: 1.6;
+        letter-spacing: -0.005em;
+        overflow-x: hidden;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      /* Paper grain: keeps a flat cream from reading as a blank browser page. */
+      body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        opacity: 0.4;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+      }
+
+      .wrap {
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        max-width: var(--max);
+        margin: 0 auto;
+        padding-inline: var(--gut);
+      }
+
+      h1,
+      h2,
+      h3 {
+        font-family: var(--display);
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        line-height: 1.08;
+        margin: 0;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      /* ---------------------------------------------------------- header */
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        backdrop-filter: saturate(1.4) blur(14px);
+        background: rgba(253, 252, 251, 0.82);
+        border-bottom: 1px solid transparent;
+        transition: border-color 0.3s ease;
+      }
+      header.stuck {
+        border-bottom-color: var(--rule);
+      }
+      .bar {
         display: flex;
         align-items: center;
-        justify-content: center;
-        background: var(--bg);
-        color: var(--text);
-        font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        justify-content: space-between;
+        gap: 16px;
+        height: 68px;
       }
-      main { max-width: 32rem; padding: 3rem 16px; }
-      h1 { font-size: 2.2rem; margin: 0 0 .5rem; letter-spacing: -.02em; }
-      p { color: var(--muted); margin: 0 0 2rem; }
-      nav a {
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+        font-family: var(--display);
+        font-weight: 700;
+        font-size: 20px;
+        letter-spacing: -0.02em;
+      }
+      .brand img {
+        width: 30px;
+        height: 30px;
+        border-radius: 8px;
+      }
+      .bar nav {
+        display: flex;
+        align-items: center;
+        gap: 22px;
+        font-size: 15px;
+        color: var(--ink-2);
+      }
+      .bar nav a {
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+      .bar nav a:hover {
+        color: var(--ink);
+      }
+      @media (max-width: 640px) {
+        .bar nav a.hide-sm {
+          display: none;
+        }
+      }
+
+      /* ------------------------------------------------------------ hero */
+      .hero {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: clamp(32px, 5vw, 64px);
+        align-items: center;
+        padding: clamp(36px, 5.5vw, 68px) 0 clamp(48px, 7vw, 84px);
+      }
+      @media (max-width: 900px) {
+        .hero {
+          grid-template-columns: 1fr;
+          text-align: left;
+        }
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--ochre);
+        background: var(--ochre-soft);
+        padding: 7px 14px 7px 11px;
+        border-radius: 999px;
+        margin-bottom: 26px;
+      }
+      .eyebrow svg {
+        width: 20px;
+        height: 15px;
+      }
+
+      h1 {
+        font-size: clamp(38px, 5.6vw, 58px);
+      }
+      h1 .dim {
+        color: var(--ink-dim);
         display: block;
-        padding: 1rem 0;
+      }
+      .lede {
+        margin: 24px 0 0;
+        max-width: 30rem;
+        font-size: clamp(17px, 2vw, 19px);
+        color: var(--ink-2);
+      }
+
+      .cta-row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 14px;
+        margin-top: 34px;
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        height: 54px;
+        padding: 0 28px;
+        border-radius: 999px;
+        background: var(--ink);
+        color: #fff;
+        font-family: var(--body);
+        font-weight: 600;
+        font-size: 16px;
+        text-decoration: none;
+        transition:
+          transform 0.18s cubic-bezier(0.2, 0.8, 0.3, 1),
+          box-shadow 0.18s;
+        box-shadow: 0 1px 2px rgba(5, 5, 5, 0.18);
+      }
+      .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 22px rgba(5, 5, 5, 0.18);
+      }
+      .btn:active {
+        transform: translateY(0);
+      }
+      .btn-note {
+        font-size: 14.5px;
+        color: var(--ink-3);
+      }
+
+      /* phone */
+      .device-wrap {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        perspective: 1400px;
+      }
+      .device-wrap::before {
+        content: '';
+        position: absolute;
+        /* Stays inside the column: a negative horizontal inset widened the
+           page on a phone. */
+        inset: -10% 0;
+        pointer-events: none;
+        background: radial-gradient(
+          72% 52% at 50% 46%,
+          rgba(178, 94, 0, 0.13) 0%,
+          rgba(178, 94, 0, 0.05) 42%,
+          transparent 72%
+        );
+      }
+      .device {
+        position: relative;
+        width: min(258px, 70vw);
+        border-radius: 42px;
+        padding: 8px;
+        background: linear-gradient(160deg, #23232a 0%, #08080b 42%, #2b2b33 100%);
+        box-shadow:
+          0 2px 4px rgba(5, 5, 5, 0.1),
+          0 28px 60px -18px rgba(5, 5, 5, 0.42),
+          0 60px 90px -40px rgba(178, 94, 0, 0.18);
+        transform: rotate(-2.2deg);
+        transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.3, 1);
+      }
+      .device:hover {
+        transform: rotate(0deg) translateY(-6px);
+      }
+      .device::after {
+        /* lit edge, so the bezel reads as glass rather than a black rectangle */
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: 42px;
+        pointer-events: none;
+        box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.34);
+      }
+      .device img {
+        display: block;
+        width: 100%;
+        /* The width/height attributes are kept for the aspect ratio, which
+           reserves the space before the image loads - but the height one is
+           also a presentational hint, and without this the screenshot renders
+           at its full 1688px. */
+        height: auto;
+        border-radius: 35px;
+        background: var(--paper);
+      }
+      .notch {
+        position: absolute;
+        top: 8px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 78px;
+        height: 21px;
+        border-radius: 0 0 14px 14px;
+        background: #08080b;
+        z-index: 2;
+      }
+
+      /* ------------------------------------------------------- tally rule */
+      .rule {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        color: var(--ink-3);
+      }
+      .rule::before,
+      .rule::after {
+        content: '';
+        height: 1px;
+        background: var(--rule);
+        flex: 1;
+      }
+      .tally {
+        width: 64px;
+        height: 48px;
+        flex: none;
+      }
+      .tally path {
+        fill: none;
+        stroke: var(--ochre);
+        stroke-width: 4.5;
+        stroke-linecap: round;
+        stroke-dasharray: 46;
+        stroke-dashoffset: 46;
+      }
+      .tally path:nth-child(5) {
+        stroke-dasharray: 62;
+        stroke-dashoffset: 62;
+      }
+      .in-view .tally path {
+        animation: draw 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+      }
+      .in-view .tally path:nth-child(2) {
+        animation-delay: 0.08s;
+      }
+      .in-view .tally path:nth-child(3) {
+        animation-delay: 0.16s;
+      }
+      .in-view .tally path:nth-child(4) {
+        animation-delay: 0.24s;
+      }
+      .in-view .tally path:nth-child(5) {
+        animation-delay: 0.36s;
+      }
+      @keyframes draw {
+        to {
+          stroke-dashoffset: 0;
+        }
+      }
+
+      /* ---------------------------------------------------------- section */
+      section {
+        padding: clamp(56px, 9vw, 104px) 0;
+      }
+      .sec-head {
+        max-width: 38rem;
+        margin-bottom: clamp(32px, 5vw, 52px);
+      }
+      .sec-head h2 {
+        font-size: clamp(30px, 4.4vw, 46px);
+      }
+      .sec-head p {
+        margin: 16px 0 0;
+        color: var(--ink-2);
+        font-size: clamp(16px, 1.8vw, 18px);
+      }
+
+      /* five events */
+      .steps {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 12px;
+      }
+      @media (max-width: 860px) {
+        .steps {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+      @media (max-width: 420px) {
+        .steps {
+          grid-template-columns: 1fr;
+        }
+      }
+      .step {
+        background: var(--card);
+        border: 1px solid var(--rule);
+        border-radius: 22px;
+        padding: 24px 20px 22px;
+        text-align: center;
+        transition:
+          transform 0.22s cubic-bezier(0.2, 0.8, 0.3, 1),
+          border-color 0.22s;
+      }
+      .step:hover {
+        transform: translateY(-5px);
+        border-color: #ddd;
+      }
+      .step img {
+        width: 60px;
+        height: 60px;
+        object-fit: contain;
+        margin-bottom: 12px;
+      }
+      .step b {
+        display: block;
+        font-family: var(--display);
+        font-weight: 700;
+        font-size: 17px;
+      }
+      .step span {
+        display: block;
+        margin-top: 4px;
+        font-size: 14px;
+        color: var(--ink-3);
+      }
+
+      .arrow-line {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-top: 28px;
+        font-size: clamp(17px, 2.2vw, 21px);
+        font-family: var(--display);
+        font-weight: 500;
+      }
+      .arrow-line svg {
+        flex: none;
+        width: 26px;
+        height: 26px;
+        color: var(--ochre);
+      }
+
+      /* insight cards */
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+      }
+      @media (max-width: 880px) {
+        .cards {
+          grid-template-columns: 1fr;
+        }
+      }
+      .icard {
+        background: var(--card);
+        border: 1px solid var(--rule);
+        border-radius: 22px;
+        padding: 26px 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .icard .tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        align-self: flex-start;
+        font-size: 12.5px;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: var(--ink-2);
+      }
+      .dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--loss);
+      }
+      .dot.warn {
+        background: var(--ochre);
+      }
+      .dot.ok {
+        background: var(--gain);
+      }
+      .icard strong {
+        font-family: var(--display);
+        font-weight: 700;
+        font-size: 20px;
+        line-height: 1.25;
+        letter-spacing: -0.015em;
+      }
+      .icard p {
+        margin: 0;
+        color: var(--ink-2);
+        font-size: 15.5px;
+      }
+
+      /* dark quote panel */
+      .panel {
+        background: var(--ink);
+        color: #fff;
+        border-radius: 32px;
+        padding: clamp(40px, 6vw, 68px) clamp(28px, 5vw, 60px);
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 32px;
+        align-items: center;
+      }
+      @media (max-width: 760px) {
+        .panel {
+          grid-template-columns: 1fr;
+        }
+      }
+      .panel h2 {
+        font-size: clamp(26px, 3.6vw, 40px);
+        max-width: 22ch;
+      }
+      .panel p {
+        margin: 16px 0 0;
+        color: #b9b9c2;
+        max-width: 42ch;
+        font-size: 16.5px;
+      }
+      .panel .tally path {
+        stroke: #fff;
+        opacity: 0.22;
+      }
+      .panel .tally {
+        width: 120px;
+        height: 90px;
+      }
+
+      /* pricing */
+      .plans {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        align-items: start;
+      }
+      @media (max-width: 760px) {
+        .plans {
+          grid-template-columns: 1fr;
+        }
+      }
+      .plan {
+        border: 1px solid var(--rule);
+        background: var(--card);
+        border-radius: 26px;
+        padding: 30px 28px;
+      }
+      .plan.pro {
+        border-color: var(--ink);
+        border-width: 2px;
+        position: relative;
+      }
+      .plan h3 {
+        font-size: 24px;
+      }
+      .price {
+        display: flex;
+        align-items: baseline;
+        gap: 8px;
+        margin: 14px 0 4px;
+      }
+      .price b {
+        font-family: var(--display);
+        font-weight: 700;
+        font-size: 38px;
+        letter-spacing: -0.03em;
+      }
+      .price span {
+        color: var(--ink-3);
+        font-size: 15px;
+      }
+      .plan > p.sub {
+        margin: 0 0 20px;
+        color: var(--ink-2);
+        font-size: 15px;
+      }
+      .plan ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 11px;
+      }
+      .plan li {
+        display: flex;
+        gap: 11px;
+        font-size: 15.5px;
+        color: var(--ink-2);
+      }
+      .plan li svg {
+        flex: none;
+        width: 19px;
+        height: 19px;
+        margin-top: 2px;
+        color: var(--gain);
+      }
+      .plan li.off svg {
+        color: var(--ink-3);
+      }
+      .badge {
+        position: absolute;
+        top: -13px;
+        left: 28px;
+        background: var(--ink);
+        color: #fff;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        padding: 6px 13px;
+        border-radius: 999px;
+      }
+      .fineprint {
+        margin-top: 22px;
+        font-size: 14px;
+        color: var(--ink-3);
+        max-width: 46rem;
+      }
+
+      /* footer */
+      footer {
         border-top: 1px solid var(--rule);
-        color: inherit;
+        padding: 44px 0 56px;
+        margin-top: clamp(40px, 6vw, 72px);
+      }
+      .foot {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px 32px;
+        align-items: center;
+        justify-content: space-between;
+        color: var(--ink-3);
+        font-size: 14.5px;
+      }
+      .foot nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 22px;
+      }
+      .foot a {
+        color: var(--ink-2);
         text-decoration: none;
       }
-      nav a:last-child { border-bottom: 1px solid var(--rule); }
-      nav a:hover { opacity: .65; }
+      .foot a:hover {
+        color: var(--ink);
+        text-decoration: underline;
+        text-underline-offset: 3px;
+      }
+
+      /* reveal */
+      .reveal {
+        opacity: 0;
+        transform: translateY(22px);
+        transition:
+          opacity 0.7s cubic-bezier(0.2, 0.8, 0.3, 1),
+          transform 0.7s cubic-bezier(0.2, 0.8, 0.3, 1);
+      }
+      .reveal.in-view {
+        opacity: 1;
+        transform: none;
+      }
+      .d1 {
+        transition-delay: 0.08s;
+      }
+      .d2 {
+        transition-delay: 0.16s;
+      }
+      .d3 {
+        transition-delay: 0.24s;
+      }
+      .d4 {
+        transition-delay: 0.32s;
+      }
+
+      :focus-visible {
+        outline: 2px solid var(--ochre);
+        outline-offset: 3px;
+        border-radius: 6px;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+        .reveal {
+          opacity: 1;
+          transform: none;
+          transition: none;
+        }
+        .tally path {
+          stroke-dashoffset: 0;
+        }
+        .in-view .tally path {
+          animation: none;
+        }
+        .device,
+        .step,
+        .btn {
+          transition: none;
+        }
+      }
     </style>
   </head>
+
   <body>
+    <header id="top-bar">
+      <div class="wrap bar">
+        <a class="brand" href="#">
+          <img src="img/mark.webp" alt="" />
+          Çetele
+        </a>
+        <nav>
+          <a class="hide-sm" href="#nasil">Nasıl çalışır</a>
+          <a class="hide-sm" href="#fiyat">Fiyat</a>
+          <a href="mailto:emrbaris@gmail.com?subject=%C3%87etele%20%E2%80%94%20erken%20eri%C5%9Fim"
+            >İletişim</a
+          >
+        </nav>
+      </div>
+    </header>
+
     <main>
-      <h1>Çetele</h1>
-      <p>Maliyetini, stoğunu ve kayıplarını kontrol altında tut.</p>
-      <nav>
-        <a href="gizlilik.html">Gizlilik Politikası →</a>
-        <a href="kosullar.html">Kullanım Koşulları →</a>
-      </nav>
+      <!-- ------------------------------------------------------- hero -->
+      <div class="wrap">
+        <div class="hero">
+          <div>
+            <span class="eyebrow reveal in-view">
+              <svg class="tally" viewBox="0 0 64 48" aria-hidden="true">
+                <path d="M9 9 L11 39" />
+                <path d="M20 8 L22 40" />
+                <path d="M32 9 L33 39" />
+                <path d="M44 8 L45 40" />
+                <path d="M5 38 L52 10" />
+              </svg>
+              Pastane · Kafe · Restoran
+            </span>
+
+            <h1 class="reveal in-view d1">
+              Aldım. Ürettim. Sattım.
+              <span class="dim">Gerisini Çetele tutar.</span>
+            </h1>
+
+            <p class="lede reveal in-view d2">
+              Küçük üretim yapan esnaf için maliyet, stok, fire ve üretim verimi takibi. Defter
+              tutmak kadar basit; hesap makinesinden akıllı.
+            </p>
+
+            <div class="cta-row reveal in-view d3">
+              <a
+                class="btn"
+                href="mailto:emrbaris@gmail.com?subject=%C3%87etele%20%E2%80%94%20erken%20eri%C5%9Fim&body=Merhaba%2C%20%C3%87etele%27yi%20denemek%20istiyorum."
+              >
+                Erken erişim iste
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path
+                    d="M5 12h14M13 6l6 6-6 6"
+                    stroke="currentColor"
+                    stroke-width="2.2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </a>
+              <span class="btn-note">iPhone için · yakında App Store’da</span>
+            </div>
+          </div>
+
+          <div class="device-wrap reveal in-view d2">
+            <div class="device">
+              <div class="notch"></div>
+              <img
+                src="img/bugun.png"
+                alt="Çetele uygulamasının Bugün ekranı: günün net tutarı, hızlı işlemler ve uyarı kartları"
+                width="780"
+                height="1688"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- -------------------------------------------------- five events -->
+      <div class="wrap"><div class="rule reveal">
+        <svg class="tally" viewBox="0 0 64 48" aria-hidden="true">
+          <path d="M9 9 L11 39" /><path d="M20 8 L22 40" /><path d="M32 9 L33 39" />
+          <path d="M44 8 L45 40" /><path d="M5 38 L52 10" />
+        </svg>
+      </div></div>
+
+      <section id="nasil">
+        <div class="wrap">
+          <div class="sec-head reveal">
+            <h2>Beş şey söylersin. Hesabı o tutar.</h2>
+            <p>
+              Ne fatura girersin, ne muhasebe bilirsin. Gün içinde olanı birkaç dokunuşla yazarsın;
+              maliyeti, stoğu ve kaybı arka planda Çetele hesaplar.
+            </p>
+          </div>
+
+          <div class="steps">
+            <div class="step reveal">
+              <img src="img/alis.webp" alt="" />
+              <b>Alış yaptım</b><span>Ne aldım, kaça</span>
+            </div>
+            <div class="step reveal d1">
+              <img src="img/uretim.webp" alt="" />
+              <b>Üretim yaptım</b><span>Kaç çıktı</span>
+            </div>
+            <div class="step reveal d2">
+              <img src="img/satis.webp" alt="" />
+              <b>Satış girdim</b><span>Ne kadar gitti</span>
+            </div>
+            <div class="step reveal d3">
+              <img src="img/fire.webp" alt="" />
+              <b>Fire oldu</b><span>Ne kadar kayıp</span>
+            </div>
+            <div class="step reveal d4">
+              <img src="img/sayim.webp" alt="" />
+              <b>Sayım yaptım</b><span>Elimde ne var</span>
+            </div>
+          </div>
+
+          <p class="arrow-line reveal d2">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path
+                d="M12 4v14M6 13l6 6 6-6"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+            Birim maliyet, stok bakiyesi, üretim verimi ve kayıp — kendiliğinden.
+          </p>
+        </div>
+      </section>
+
+      <!-- ----------------------------------------------------- insights -->
+      <section style="padding-top: 0">
+        <div class="wrap">
+          <div class="sec-head reveal">
+            <h2>Sonra gelip sana şunu der:</h2>
+            <p>
+              Grafik yok, tablo yok. Bakman gereken bir şey varsa cümleyle söyler — yoksa susar.
+            </p>
+          </div>
+
+          <div class="cards">
+            <div class="icard reveal">
+              <span class="tag"><i class="dot"></i> Fiyat değişikliği</span>
+              <strong>Antep fıstığı %18,2 zamlandı.</strong>
+              <p>4 ürün etkileniyor. Hangileri olduğunu tek dokunuşla görürsün.</p>
+            </div>
+            <div class="icard reveal d1">
+              <span class="tag"><i class="dot warn"></i> Üretim farkı</span>
+              <strong>10 beklenen · 9 çıkan</strong>
+              <p>Aynı malzemeyle az ürün çıktıysa birim maliyetin sessizce yükselmiştir.</p>
+            </div>
+            <div class="icard reveal d2">
+              <span class="tag"><i class="dot ok"></i> Sorun yok</span>
+              <strong>Bugün önemli bir sorun görünmüyor.</strong>
+              <p>En sık göreceğin ekran bu. Uygulama ancak gerçekten bir şey varsa konuşur.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- -------------------------------------------------------- panel -->
+      <div class="wrap">
+        <div class="panel reveal">
+          <div>
+            <h2>Verilerin senindir. Her zaman.</h2>
+            <p>
+              Kayıt tutmak hiçbir zaman ücretli olmaz, ödeme duvarının arkasına alınmaz. Hesabını
+              uygulamadan kendin silebilirsin. Reklam yok, veri satışı yok, takip yok.
+            </p>
+          </div>
+          <svg class="tally" viewBox="0 0 64 48" aria-hidden="true">
+            <path d="M9 9 L11 39" /><path d="M20 8 L22 40" /><path d="M32 9 L33 39" />
+            <path d="M44 8 L45 40" /><path d="M5 38 L52 10" />
+          </svg>
+        </div>
+      </div>
+
+      <!-- ------------------------------------------------------- fiyat -->
+      <section id="fiyat">
+        <div class="wrap">
+          <div class="sec-head reveal">
+            <h2>Önce kullan, sonra karar ver.</h2>
+            <p>
+              İlk 40 kaydın boyunca her şey açık — uyarılar dahil. Sonrasında kayıt tutmak ücretsiz
+              kalır, analiz kısmı Pro’ya geçer.
+            </p>
+          </div>
+
+          <div class="plans">
+            <div class="plan reveal">
+              <h3>Ücretsiz</h3>
+              <div class="price"><b>0 ₺</b><span>her zaman</span></div>
+              <p class="sub">Defterin yerine geçer.</p>
+              <ul>
+                <li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg> Sınırsız alış, üretim, satış, fire, sayım</li>
+                <li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg> Birim maliyet ve stok bakiyesi</li>
+                <li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg> Günün özeti ve son işlemler</li>
+                <li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg> İlk 40 kayıtta tüm Pro özellikleri</li>
+              </ul>
+            </div>
+
+            <div class="plan pro reveal d1">
+              <span class="badge">Pro</span>
+              <h3>Çetele Pro</h3>
+              <div class="price"><b>2,99 $</b><span>/ ay · yıllık 19,99 $</span></div>
+              <p class="sub">Kayıtlarından sonuç çıkaran kısım.</p>
+              <ul>
+                <li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg> Zam ve maliyet artışı uyarıları</li>
+                <li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg> Üretim farkı ve fire uyarıları</li>
+                <li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg> “Stok kaç gün yeter” ve sipariş önerileri</li>
+                <li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg> 7 gün ücretsiz deneme</li>
+              </ul>
+            </div>
+          </div>
+
+          <p class="fineprint">
+            Fiyatlar App Store üzerinden, ülkene göre gösterilir. Abonelik otomatik yenilenir;
+            dönem bitiminden 24 saat öncesine kadar iOS Ayarlar → Abonelikler’den iptal
+            edebilirsin. Pro’n bitse bile girdiğin bütün kayıtları görmeye ve yenilerini eklemeye
+            devam edersin.
+          </p>
+        </div>
+      </section>
     </main>
+
+    <footer>
+      <div class="wrap foot">
+        <span>© 2026 Çetele · Emre Barış</span>
+        <nav>
+          <a href="gizlilik.html">Gizlilik Politikası</a>
+          <a href="kosullar.html">Kullanım Koşulları</a>
+          <a href="mailto:emrbaris@gmail.com">emrbaris@gmail.com</a>
+        </nav>
+      </div>
+    </footer>
+
+    <script>
+      // Reveal on scroll. Everything is visible without JS: the class is only
+      // added, never required, and the hero ships with `in-view` already set.
+      const io = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('in-view');
+              io.unobserve(entry.target);
+            }
+          }
+        },
+        { rootMargin: '0px 0px -12% 0px', threshold: 0.08 },
+      );
+      document.querySelectorAll('.reveal:not(.in-view)').forEach((el) => io.observe(el));
+
+      // Hairline under the header only once the page has left the top.
+      const bar = document.getElementById('top-bar');
+      const onScroll = () => bar.classList.toggle('stuck', window.scrollY > 8);
+      onScroll();
+      addEventListener('scroll', onScroll, { passive: true });
+    </script>
   </body>
 </html>

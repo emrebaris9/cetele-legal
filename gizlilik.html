@@ -4,6 +4,13 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Gizlilik Politikası — Çetele</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Instrument+Sans:wght@400;500;600&display=swap&subset=latin,latin-ext"
+      rel="stylesheet"
+    />
+    <link rel="icon" href="img/mark.webp" />
     <style>
       :root {
         --bg: #fdfcfb;
@@ -38,10 +45,46 @@
       hr { border: 0; border-top: 1px solid var(--rule); margin: 3rem 0 1.5rem; }
       footer { color: var(--muted); font-size: .875rem; }
       .lead { color: var(--muted); }
+      /* Same two faces as the landing page, so the three pages read as one site. */
+      body {
+        font-family: 'Instrument Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      }
+      h1,
+      h2 {
+        font-family: 'Comfortaa', ui-rounded, system-ui, sans-serif;
+        font-weight: 700;
+      }
+      .home {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        margin-bottom: 2.5rem;
+        font-family: 'Comfortaa', ui-rounded, system-ui, sans-serif;
+        font-weight: 700;
+        font-size: 19px;
+        letter-spacing: -0.02em;
+        text-decoration: none;
+        color: inherit;
+      }
+      .home img {
+        width: 28px;
+        height: 28px;
+        border-radius: 8px;
+      }
+      .home span {
+        color: var(--muted);
+        font-family: 'Instrument Sans', sans-serif;
+        font-weight: 500;
+        font-size: 14px;
+      }
     </style>
   </head>
   <body>
     <main>
+      <a class="home" href="index.html">
+        <img src="img/mark.webp" alt="" />
+        Çetele <span>· ana sayfa</span>
+      </a>
       <h1>Gizlilik Politikası</h1>
       <p class="updated">Çetele · Son güncelleme: 23 Eylül 2026</p>
 
@@ -70,9 +113,15 @@
         <li>tedarikçi adı ve — girdiysen — telefon numarası ile notlar.</li>
       </ul>
 
+      <p><strong>Abonelik bilgileri.</strong> Çetele Pro satın alırsan ödeme Apple üzerinden yapılır;
+        kart bilgin Çetele'ye hiçbir zaman ulaşmaz. Aboneliğin durumunu (aktif, süresi, yenileme
+        tarihi) takip etmek için <strong>RevenueCat</strong> hizmeti kullanılır. RevenueCat, Apple'dan
+        gelen satın alma makbuzunu ve hesabına ait anonim bir kimliği işler; adını veya e-postanı
+        almaz. Abonelik durumu işletmene bağlı olarak saklanır.</p>
+
       <p><strong>Toplanmayanlar.</strong> Çetele analitik, reklam veya kullanıcı izleme aracı
         kullanmaz. Konum bilgin, rehberin, fotoğrafların veya cihaz tanımlayıcıların toplanmaz.
-        Ödeme bilgisi istenmez.</p>
+        Kart veya banka bilgisi istenmez; ödeme varsa Apple alır.</p>
 
       <h2>Tedarikçi bilgileri hakkında</h2>
       <p>
@@ -88,6 +137,15 @@
         maliyet hesaplamak, stok bakiyesi tutmak, fiyat değişimlerini ve üretim farklarını
         göstermek. Verilerin pazarlama amacıyla kullanılmaz, satılmaz ve üçüncü kişilerle
         paylaşılmaz.
+      </p>
+
+      <h2>Hizmet sağlayıcılar</h2>
+      <p>
+        Verilerini işleyen üçüncü taraflar: <strong>Supabase</strong> (veritabanı ve kimlik
+        doğrulama, AB sunucuları), <strong>Apple</strong> (Apple ile giriş, App Store ödemeleri),
+        <strong>Google</strong> (Google ile giriş) ve <strong>RevenueCat</strong> (abonelik durumu).
+        Her biri yalnızca kendi görevi için gereken veriyi alır ve bu veriyi başka amaçla
+        kullanmaz.
       </p>
 
       <h2>Verilerin nerede saklanır</h2>
