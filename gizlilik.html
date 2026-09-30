@@ -86,7 +86,7 @@
         Çetele <span>· ana sayfa</span>
       </a>
       <h1>Gizlilik Politikası</h1>
-      <p class="updated">Çetele · Son güncelleme: 23 Eylül 2026</p>
+      <p class="updated">Çetele · Son güncelleme: 30 Eylül 2026 · <a href="privacy.html">English</a></p>
 
       <p class="lead">
         Çetele, küçük işletmelerin maliyet, stok ve üretim kayıtlarını tutmasına yardımcı olan bir
@@ -103,25 +103,37 @@
       <h2>Toplanan bilgiler</h2>
       <p><strong>Hesap bilgileri.</strong> Uygulamaya Google, Apple veya e-posta adresinle giriş
         yapabilirsin. Bu durumda e-posta adresin ve — sağlanmışsa — adın saklanır. Şifre
-        kullanılmaz, dolayısıyla şifre saklanmaz.</p>
+        kullanılmaz, dolayısıyla şifre saklanmaz. Uygulamayı giriş yapmadan misafir olarak da
+        kullanabilirsin; misafir hesapta sen kaydedene kadar ad veya e-posta bulunmaz.</p>
 
       <p><strong>İşletme kayıtların.</strong> Uygulamaya girdiğin ticari veriler saklanır:</p>
       <ul>
         <li>işletme adı ve türü,</li>
         <li>malzemeler, ürünler, reçeteler ve birim maliyetler,</li>
         <li>alış, üretim, satış, fire ve stok sayım kayıtları,</li>
+        <li>girdiğin aylık sabit giderler (kira, faturalar, personel toplamı),</li>
         <li>tedarikçi adı ve — girdiysen — telefon numarası ile notlar.</li>
       </ul>
 
       <p><strong>Abonelik bilgileri.</strong> Çetele Pro satın alırsan ödeme Apple üzerinden yapılır;
-        kart bilgin Çetele'ye hiçbir zaman ulaşmaz. Aboneliğin durumunu (aktif, süresi, yenileme
-        tarihi) takip etmek için <strong>RevenueCat</strong> hizmeti kullanılır. RevenueCat, Apple'dan
-        gelen satın alma makbuzunu ve hesabına ait anonim bir kimliği işler; adını veya e-postanı
-        almaz. Abonelik durumu işletmene bağlı olarak saklanır.</p>
+        kart bilgin Çetele'ye hiçbir zaman ulaşmaz. Aboneliğin durumunu takip etmek için
+        <strong>RevenueCat</strong> hizmeti kullanılır. RevenueCat, Apple'dan gelen satın alma
+        makbuzunu ve Çetele hesabının kimliğini (rastgele bir numara) işler; adını veya e-postanı
+        almaz. Abonelik değişikliklerini sunucumuza bildirir, böylece doğru işletmeler açılır. Bu
+        abonelik olaylarını ve verdiğimiz ücretsiz Pro sürelerinin tarihlerini sunucumuzda tutarız.
+        Ayrıca bir işletmenin ücretsiz kayıt geri sayımını, Pro kilidini ve Pro ekranını ilk ne
+        zaman gördüğünü kaydederiz; tutarlar veya kayıt içerikleri bunlara dahil değildir.</p>
 
-      <p><strong>Toplanmayanlar.</strong> Çetele analitik, reklam veya kullanıcı izleme aracı
-        kullanmaz. Konum bilgin, rehberin, fotoğrafların veya cihaz tanımlayıcıların toplanmaz.
-        Kart veya banka bilgisi istenmez; ödeme varsa Apple alır.</p>
+      <p><strong>Rehber.</strong> Bir tedarikçiyi telefon rehberinden eklemeyi seçersen yalnız
+        seçtiğin tek kişinin adı ve numarası kaydedilir. Rehberin hiçbir zaman yüklenmez.</p>
+
+      <p><strong>Çökme raporları.</strong> Uygulama çöktüğünde veya bir işlem başarısız olduğunda,
+        sorunun düzeltilebilmesi için teknik bir rapor (cihaz modeli, işletim sistemi sürümü,
+        uygulama sürümü ve hatanın kendisi) <strong>Sentry</strong>'ye gönderilebilir. Bu raporlarda
+        işletme kayıtları, ad veya e-posta bulunmaz.</p>
+
+      <p><strong>Toplanmayanlar.</strong> Reklam kimliği, konum, fotoğraf veya kullanım analitiği
+        toplanmaz. Kart veya banka bilgisi istenmez; ödeme varsa Apple alır.</p>
 
       <h2>Tedarikçi bilgileri hakkında</h2>
       <p>
@@ -143,9 +155,10 @@
       <p>
         Verilerini işleyen üçüncü taraflar: <strong>Supabase</strong> (veritabanı ve kimlik
         doğrulama, AB sunucuları), <strong>Apple</strong> (Apple ile giriş, App Store ödemeleri),
-        <strong>Google</strong> (Google ile giriş) ve <strong>RevenueCat</strong> (abonelik durumu).
-        Her biri yalnızca kendi görevi için gereken veriyi alır ve bu veriyi başka amaçla
-        kullanmaz.
+        <strong>Google</strong> (Google ile giriş), <strong>RevenueCat</strong> (abonelik durumu),
+        <strong>Sentry</strong> (çökme raporları) ve <strong>Cloudflare Turnstile</strong> (misafir
+        girişinde bot koruması). Her biri yalnızca kendi görevi için gereken veriyi alır ve bu
+        veriyi başka amaçla kullanmaz.
       </p>
 
       <h2>Verilerin nerede saklanır</h2>
@@ -163,7 +176,8 @@
       <h2>Saklama süresi</h2>
       <p>
         Kayıtların, sen silene veya hesabını kapatana kadar saklanır. Hesabını sildiğinde verilerin
-        kalıcı olarak silinir; yedeklerden temizlenmesi en geç 30 gün sürer.
+        kalıcı olarak silinir; yedeklerden temizlenmesi en geç 30 gün sürer. Hiç kaydedilmemiş ve
+        30 gün kullanılmamış misafir hesaplar kendiliğinden silinir.
       </p>
 
       <h2>Hesabını ve verilerini silme</h2>
